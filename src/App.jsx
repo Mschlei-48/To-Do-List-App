@@ -8,20 +8,22 @@ import Login from './login.jsx'
 import Layout from './Layout.jsx';
 import Register from "./registration.jsx"
 import Home from './home.jsx'
+import { useNavigate } from 'react-router-dom';
 
 function App() {
 
   const [records,setRecords]=useState([]);
-  const [path,setPath]=useState("/")
+
+  //   const NewPage=((path)=>{
+  //     const navigate=useNavigate()
+  //     navigate(path)
+  // })
+
 
   const add=((username,password)=>{
     setRecords([...records,{username,password}])    
   })
-  // console.log(records.map((record)=>{record.username,record.password}))
-  // const [Path,setPath]=useState('')
-  // const handlePath=((path)=>{
-  //   setPath(path);
-  // })
+
   
   return (
     <>
@@ -29,7 +31,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout/>}>
           <Route index element={<Login/>}/>
-          <Route path='register' element={<Register add={add} records={records}/>}/>
+          <Route path='register' element={<Register/>}/>
           <Route path='home' element={<Home/>}/>
           </Route>
         </Routes>

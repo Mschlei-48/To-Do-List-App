@@ -1,19 +1,20 @@
 import {useState} from 'react'
 import './register-style.css'
-
+import { useNavigate } from 'react-router-dom'
 
 function Register(props){
     const [useName,setUseName]=useState('')
     const [passWord,setPassWord]=useState('')
+    const navigate=useNavigate()
+
     const add=(()=>{
         props.add(useName,passWord)
     })
+    
+    const NewPage=(()=>{
+        navigate('/')
+    })
    
- 
-    // const [path,setPath]=useState('')
-    // const Path=(()=>{
-    //     props.handlePath(path)
-    // })
     return(
         <div className='main-content'>
         <div className="register-content">
@@ -29,7 +30,7 @@ function Register(props){
                 <button type='submit' onClick={add}>Register</button>
             <br></br>
             <br></br>
-            <button id='login-button'>Already a user? Click here to login</button>
+            <button id='login-button' onClick={NewPage}>Already a user? Click here to login</button>
         </div>
     </div>
     )

@@ -1,11 +1,15 @@
 import {useState} from 'react'
 import './login-style.css'
+import { useNavigate } from 'react-router-dom';
 
-function Login(){
+
+function Login(props){
+
     // const [path,setPath]=useState('')
-    // const Path=(()=>{
-    //     props.handlePath(path)
-    // })
+    const navigate=useNavigate()
+    const NewPage=(()=>{
+        navigate('register')
+    })
     return(
         <div className='main-content'>
         <div className="login-content">
@@ -22,7 +26,7 @@ function Login(){
                 <button type='submit'>Login</button>
             </form>
             <br></br>
-            <button id='register-button'>Not a user? Click here to register</button>
+            <button id='register-button' onClick={NewPage}>Not a user? Click here to register</button>
         </div>
     </div>
     )
