@@ -1,0 +1,22 @@
+.main-content{
+    width:95vw;
+    height:85vh;
+}
+.register-content{
+    background-color:rgb(21, 21, 202);
+    width:50%;
+    height:90%;
+    margin-left:23%;
+    color:white;
+}
+.input,button{
+    width:50%;
+    /* height:100%; */
+    padding:3%;
+}
+#form{
+    margin-top:16%;
+}
+#login-button{
+    background-color:rgb(18, 180, 18);
+}
