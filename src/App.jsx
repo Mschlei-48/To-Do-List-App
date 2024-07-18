@@ -13,26 +13,25 @@ import { useNavigate } from 'react-router-dom';
 function App() {
 
   const [records,setRecords]=useState([]);
+  const [tasks,setTasks]=useState([])
 
-  //   const NewPage=((path)=>{
-  //     const navigate=useNavigate()
-  //     navigate(path)
-  // })
-
-
+  const AddTasks=((taskTitle,taskDesc)=>{
+    setTasks([...tasks,{taskTitle,taskDesc}])
+  })
   const add=((username,password)=>{
     setRecords([...records,{username,password}])    
   })
 
+  // console.log(tasks)
   
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout/>}>
-          <Route index element={<Login/>}/>
-          <Route path='register' element={<Register/>}/>
-          <Route path='home' element={<Home/>}/>
+          <Route index element={<Login records={records}/>}/>
+          <Route path='register' element={<Register add={add}/>}/>
+          <Route path='home' element={<Home AddTasks={AddTasks} tasks={tasks}/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
