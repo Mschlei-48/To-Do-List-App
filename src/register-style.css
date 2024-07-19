@@ -1,15 +1,50 @@
-.main-content{
+.register-main-content{
     width:95vw;
     height:85vh; 
     margin-top:9%;
-    margin-bottom:-4%;
 }
 
-.register-input,button{
+.register-input{
     width:30%;
-    padding:2%;
+    padding:1.5%;
+    margin-left:35%;
+    border-radius:9px;
+    background-color: transparent;
+    opacity:0.7;
+    border:2px white solid;
 }
 
-/* #login-button{
-    background-color:rgb(18, 180, 18);
-} */
+#login-button{
+    background-color:rgb(237, 22, 58);
+    width:33%;
+    margin-left:35%;
+    color:white;
+
+}
+#register-submit-button{
+    background-color:blue;
+    width:33%;
+    margin-left:35%;
+    color:white;
+}
+#reg-email-icon{
+    position:absolute;
+    margin-left:35%;
+    margin-top:1.5%;
+    color:white;
+}
+#reg-password-icon{
+    position:absolute;
+    margin-left:35%;
+    margin-top:1.5%;
+    color:white;
+}
+#reg-password-icon2{
+    position:absolute;
+    margin-left:35%;
+    margin-top:1.5%;
+    color:white;
+}
+::placeholder{
+    color:white;
+}

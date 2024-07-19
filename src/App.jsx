@@ -8,6 +8,7 @@ import Login from './login.jsx'
 import Layout from './Layout.jsx';
 import Register from "./registration.jsx"
 import Home from './home.jsx'
+import './login-style.css'
 import { useNavigate } from 'react-router-dom';
 
 function App() {
@@ -15,8 +16,8 @@ function App() {
   const [records,setRecords]=useState([]);
   const [tasks,setTasks]=useState([])
 
-  const AddTasks=((taskTitle,taskDesc)=>{
-    setTasks([...tasks,{taskTitle,taskDesc}])
+  const AddTasks=((taskTitle,taskDesc,taskPriority)=>{
+    setTasks([...tasks,{taskTitle,taskDesc,taskPriority}])
   })
   const add=((username,password)=>{
     setRecords([...records,{username,password}])    
