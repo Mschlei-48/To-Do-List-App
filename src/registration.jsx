@@ -1,4 +1,5 @@
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
+import axios from 'axios'
 import './register-style.css'
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,45 +12,38 @@ function Register(props){
     const [confirmPassword,setConfirmPassword]=useState('')
     const navigate=useNavigate()
 
-    const add=(()=>{
-        props.add(useName,passWord)
-    })
-    
-    const ConfPassword=((pass1,pass2)=>{
-        if(pass1===pass2){
-            add()
-            navigate('/')
+    const addUser = async () => {
+        try {
+          await axios.post('http://localhost:3001/register', {
+            useName,
+            passWord,
+          });
+          alert('User added successfully');
+          navigate('/');
+        } catch (error) {
+          alert('Error registering user:' + error.message); // Use error.message for better feedback
         }
-        else{
-            alert("The passwords do not match")
-        }
-    })
-    const handlePassword=(()=>{
-        ConfPassword(passWord,confirmPassword)
-    })
-    const NewPage=(()=>{
-        navigate('/')
-    })
-    const [emailIcon,setEmailIcon]=useState(faEnvelope)
-    const [passIcon,setPassIcon]=useState(faLock)
+      };
+
+
     return(
         <div className='register-main-content'>
-            <FontAwesomeIcon icon={emailIcon} id='reg-email-icon'/>
-                <input className="register-input" type='email' placeholder="    Email address" onChange={(event)=>{setUseName(event.target.value);setEmailIcon('')}}></input>
+            {/* <FontAwesomeIcon icon={emailIcon} id='reg-email-icon'/> */}
+                <input className="register-input" type='email' placeholder="    Email address" onChange={(event)=>{setUseName(event.target.value)}}></input>
                 <br></br>
                 <br></br>
-                <FontAwesomeIcon icon={passIcon} id='reg-password-icon'/>
-                <input placeholder="    Password" className="register-input" type='password' onChange={(event)=>{setPassWord(event.target.value);setPassIcon('')}}></input>
+                {/* <FontAwesomeIcon icon={passIcon} id='reg-password-icon'/> */}
+                <input placeholder="    Password" className="register-input" type='password' onChange={(event)=>{setPassWord(event.target.value)}}></input>
                 <br></br>
                 <br></br>
-                <FontAwesomeIcon icon={passIcon} id='reg-password-icon2'/>
-                <input placeholder="    Confirm Password" className="register-input" type='password' onChange={(event)=>{setConfirmPassword(event.target.value);setPassIcon('')}}></input>
+                {/* <FontAwesomeIcon icon={passIcon} id='reg-password-icon2'/> */}
+                <input placeholder="    Confirm Password" className="register-input" type='password'></input>
                 <br></br>
                 <br></br>
-                <button type='submit' onClick={handlePassword} id='register-submit-button'>Register</button>
+                <button type='submit' id='register-submit-button' onClick={addUser}>Register</button>
             <br></br>
             <br></br>
-            <button id='login-button' onClick={NewPage}>Already a user? Click here to login</button>
+            <button id='login-button' onClick={() => navigate('/login')}>Already a user? Click here to login</button>
     </div>
     )
 }

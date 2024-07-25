@@ -1,7 +1,5 @@
 .home-main-content{
     margin-left:150%;
     width:200%;
-    background-image: url("./src/assets/home-back.jpg");
-    background-repeat: no-repeat;
-    background-size:cover;
+    color:white;
 }
