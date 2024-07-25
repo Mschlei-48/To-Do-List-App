@@ -15,8 +15,8 @@ function Register(props){
     const addUser = async () => {
         try {
           await axios.post('http://localhost:3001/register', {
-            useName,
-            passWord,
+            "username":useName,
+            "password":passWord,
           });
           alert('User added successfully');
           navigate('/');

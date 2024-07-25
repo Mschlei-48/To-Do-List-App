@@ -4,14 +4,12 @@ import './home-styles.css';
 
 
 function Home(props){
-
     const [TaskTitle,setTaskTitle]=useState('')
     const [TaskDesc,setTaskDesc]=useState('')
     const [TaskPriority,setTaskPriority]=useState('')
     const addTasks=(()=>{
         props.AddTasks(TaskTitle,TaskDesc,TaskPriority)
     })
-
     const handlePriority=((priority)=>{
         if(priority==="High"){
             return "red"
@@ -21,8 +19,7 @@ function Home(props){
         }
         else{
             return "green"
-        }
-            
+        }    
     })
 
     return(
