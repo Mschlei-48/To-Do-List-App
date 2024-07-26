@@ -16,11 +16,14 @@ function Login(props){
     const NewPage=(()=>{
         navigate('register')
     })
-
-    // const email_icon=<FontAwesomeIcon icon="fa-solid fa-envelope" />
+    
+    // Get the email of the recently logged in person
+    const handleEmail = () => {
+        props.updateEmail(userName); // Update the message in parent component
+      };
+    
     const [emailIcon,setEmailIcon]=useState(faEnvelope)
     const [passIcon,setPassIcon]=useState(faLock)
-
     // Database code(Get user details and checkif the entered information matches the one in the database, if it does then log the person in)
     // https://codedamn.com/news/reactjs/axios-network-requests
     const getUsers=async ()=>{
@@ -30,7 +33,7 @@ function Login(props){
             const response=await axios.get('http://localhost:3001/users') 
              
             if(response.data.find((record)=>record.username===userName && record.password===passWord)){
-                navigate('home')
+                navigate('home');
             }
             else if(response.data.find((record)=>record.username===userName && record.password!==passWord)){
                 alert("Incorrect password,please enter correct password")
@@ -60,7 +63,7 @@ function Login(props){
                 <input placeholder="    Password" className="login-input" type='password' onChange={(event)=>{setPassWord(event.target.value);setPassIcon()}}></input>
                 <br></br>
                 <br></br>
-                <button id='submit-button' onClick={getUsers}>Login</button>
+                <button id='submit-button' onClick={()=>{getUsers();handleEmail()}}>Login</button>
             <br></br>
             <br></br>
             <button id='register-button' onClick={NewPage}>Not a user? Click here to register</button>

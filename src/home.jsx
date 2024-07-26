@@ -1,30 +1,36 @@
 import { useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import './home-styles.css';
+import axios from 'axios'
 
 
 function Home(props){
     const [TaskTitle,setTaskTitle]=useState('')
     const [TaskDesc,setTaskDesc]=useState('')
     const [TaskPriority,setTaskPriority]=useState('')
-    const addTasks=(()=>{
-        props.AddTasks(TaskTitle,TaskDesc,TaskPriority)
-    })
-    const handlePriority=((priority)=>{
-        if(priority==="High"){
-            return "red"
+
+    const email=props.email;
+    const [tasks,setTasks]=useState([]);
+    //update the tasks
+    const updateTask=async ()=>{
+        try{
+            // const task={"taskTitle":TaskTitle, "TaskPriority":TaskPriority,"taskDescription":TaskDesc,"username":{email}}
+            const response=await axios.put('http://localhost:3001/users/update-tasks',{
+                "taskTitle":TaskTitle, 
+                "TaskPriority":TaskPriority,
+                "taskDescription":TaskDesc,
+                "username":email
+            });
+            alert('Task added successfully');
         }
-        else if(priority==="Medium"){
-            return "yellow"
+        catch(error){
+            console.error("Error making input request:",error);
         }
-        else{
-            return "green"
-        }    
-    })
+    };
 
     return(
         <div className='home-main-content'>
-            <button type='submit' onClick={addTasks}>Save Task</button>
+            <button type='submit' onClick={updateTask}>Save Task</button>
             <br></br>
             <br></br>
             <input placeholder='Add Task Title' onChange={(event)=>setTaskTitle(event.target.value)}></input>
@@ -39,20 +45,19 @@ function Home(props){
             <textarea placeholder='Enter  Task Description' onChange={(event)=>setTaskDesc(event.target.value)}></textarea>
             <div className='table-div'>
                 <h1>Your Tasks</h1>
-                
                                    <table>
                                    <tr>
                                        <th>Task Title</th>
                                        <th>Task Description</th>
                                        <th>Task Priority</th>
-                                   </tr>
-                                   {props.tasks.map((task)=>(
+                                </tr>
+                                   {/* {props.tasks.map((task)=>(
                                    <tr>
                                        <td>{task.taskTitle}</td>
                                        <td>{task.taskDesc}</td>
                                        <td><p style={{backgroundColor:handlePriority(TaskPriority)}}>{task.taskPriority}</p></td>
                                    </tr>
-                                    ))}
+                                    ))} */}
                                </table>     
             </div>
         </div>

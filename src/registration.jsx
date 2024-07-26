@@ -20,7 +20,7 @@ function Register(props){
         try {
           await axios.post('http://localhost:3001/register', {
             "username":useName,
-            "password":passWord,
+            "password":passWord
           });
           alert('User added successfully');
           navigate('/');
@@ -57,7 +57,7 @@ function Register(props){
                 <button type='submit' id='register-submit-button' onClick={addUser}>Register</button>
             <br></br>
             <br></br>
-            <button id='login-button' onClick={() => navigate('/login')}>Already a user? Click here to login</button>
+            <button id='login-button' onClick={() => navigate('/')}>Already a user? Click here to login</button>
     </div>
     )
 }
