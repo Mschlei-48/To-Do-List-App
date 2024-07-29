@@ -11,9 +11,9 @@ const createTable = () => {
     CREATE TABLE IF NOT EXISTS dataUsers (
       username TEXT PRIMARY KEY NOT NULL,
       password TEXT NOT NULL,
-      taskTitle TEXT UNIQUE [],
-      taskPriority TEXT [],
-      taskDescription TEXT []
+      taskTitle TEXT UNIQUE,
+      taskPriority TEXT,
+      taskDescription TEXT
     );
   `;
   db.prepare(sql).run();
