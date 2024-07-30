@@ -22,7 +22,6 @@ function Home(props){
     console.log("Email:",email);
     const [tasks,setTasks]=useState([]);
 
-
     //update the tasks
     const updateTask=async ()=>{
         try{
@@ -80,8 +79,10 @@ console.log(tasks)
           <textarea placeholder='Enter Task Description' onChange={(event) => setTaskDesc(event.target.value)} />
           <div className='table-div'>
             <h1>Your Tasks</h1>
-            {tasks.length > 0 && email !== "" & tasks[0].taskTitle!==undefined ? (
+            <input type="text" placeholder="Search.."></input>
+            {tasks.length > 0 && email !== "" && tasks[0].taskTitle!==undefined ? (
                 edit === false ? (
+                    
                 <table>
                     <thead>
                     <tr>
