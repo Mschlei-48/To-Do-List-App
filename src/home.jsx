@@ -20,7 +20,7 @@ function Home(props){
     const [edit,setEdit]=useState(false);
     const email=props.email;
     console.log("Email:",email);
-    const [tasks,setTasks]=useState([]);
+    // const [tasks,setTasks]=useState([]);
 
     //update the tasks
     const updateTask=async ()=>{
@@ -33,8 +33,8 @@ function Home(props){
                 "username":email
             });
             // alert('Task added successfully');
-            tasks.pop()
-            setTasks(...tasks,[{"taskTitle":TaskTitle,"TaskPriority":TaskPriority,"taskDescription":TaskDesc}])
+            // tasks.pop()
+            // setTasks(...tasks,[{"taskTitle":TaskTitle,"TaskPriority":TaskPriority,"taskDescription":TaskDesc}])
         }
         catch(error){
             console.error("Error making input request:",error);
@@ -44,8 +44,11 @@ function Home(props){
     const getTasks = async () => {
         try {
           const response = await axios.get(`http://localhost:3001/users/username?username=${props.email}`); // Use template literal for clarity
-          tasks.pop()
-          setTasks([...tasks,response.data])
+        //   tasks.pop()
+        //   setTasks([...tasks,response.data])
+        setTaskTitle(response.data.taskTitle)
+        setTaskDesc(response.data.taskDescription)
+        setTaskPriority(response.data.taskPriority)
         } catch (error) {
           console.error(error, "Could not get user");
         }
@@ -64,11 +67,11 @@ function Home(props){
         
       };
       
-console.log(tasks)
+// console.log(tasks)
     return (
         <div className='home-main-content'>
-          <button type='submit' onClick={() => { updateTask(); getTasks()}}>Save Task</button>
-          <br />
+          {/* <button type='submit' onClick={() => { updateTask(); getTasks()}}>Save Task</button> */}
+          <br/>
           <br />
           <input placeholder='Add Task Title' onChange={(event) => setTaskTitle(event.target.value)} />
           <br />
@@ -82,8 +85,9 @@ console.log(tasks)
           <textarea placeholder='Enter Task Description' onChange={(event) => setTaskDesc(event.target.value)} />
           <div className='table-div'>
             <h1>Your Tasks</h1>
-            <input type="text" placeholder="Search.."></input>
-            {tasks.length > 0 && email !== "" && tasks.some(task => task.taskTitle) ? (
+
+            
+            { TaskTitle!=="" && TaskDesc!=="" && TaskPriority!=="" && email !== ""  ? (
                 edit === false ? (
                     
                 <table>
@@ -95,15 +99,18 @@ console.log(tasks)
                     </tr>
                     </thead>
                     <tbody>
-                    {tasks.map((task) => (
-                        <tr key={task.id}>
-                        <td>{task.taskTitle}</td>
-                        <td>{task.taskDescription}</td>
-                        <td style={{ backgroundColor: handlePriority(task.taskPriority) }}>{task.taskPriority}</td>
+                    {/* {tasks.map((task) => ( */}
+                                {/*     const [TaskTitle,setTaskTitle]=useState('')
+    const [TaskDesc,setTaskDesc]=useState('')
+    const [TaskPriority */}
+                        <tr>
+                        <td>{TaskTitle}</td>
+                        <td>{TaskDesc}</td>
+                        <td style={{ backgroundColor: handlePriority(TaskPriority) }}>{TaskPriority}</td>
                         <td><button onClick={() => setEdit(true)}>Edit Task</button></td>
-                        <td><button onClick={()=>{setTaskTitle(null);setTaskDesc(null);setTaskPriority(null);updateTask();tasks.pop()}}>Delete Task</button></td>
+                        <td><button onClick={()=>{setTaskTitle("");setTaskDesc("");setTaskPriority("");updateTask()}}>Delete Task</button></td>
                         </tr>
-                    ))}
+                    {/* // ))} */}
                     </tbody>
                 </table>
                 ) : (
@@ -122,7 +129,7 @@ console.log(tasks)
                         <td><input onChange={(event)=>setTaskTitle(event.target.value)}></input></td>
                         <td><input onChange={(event)=>setTaskDesc(event.target.value)}></input></td>
                         <td><input onChange={(event)=>setTaskPriority(event.target.value)}></input></td>
-                        <td><button onClick={() => {setEdit(false);updateTask();tasks.pop();getTasks()}}>Save Task</button></td>
+                        <td><button onClick={() => {setEdit(false);updateTask();getTasks()}}>Save Task</button></td>
                         </tr> 
                     </tbody>
                 </table>
