@@ -71,3 +71,32 @@ function Login(props){
     )
 }
 export default Login;
+
+// {tasks.length > 0 ? (
+//     // Display editable tasks if edit is false
+//     edit === false ? (
+//       tasks.map((task) => (
+//         <tr key={task.id}>
+//           <td>{task.taskTitle}</td>
+//           <td>{task.taskDescription}</td>
+//           <td>{handlePriority(task.taskPriority)}</td>
+//           {/* Button to toggle edit mode */}
+//       <td><button onClick={() => setEdit(true)}>Edit Task</button></td>
+//           <td><button>Delete Task</button></td>
+//         </tr>
+//       ))
+//     ) : (
+//           tasks.map((task)=>{
+//               <tr>
+//                         <td><input value={tasks.taskTitle}/></td>
+//                         <td><input value={tasks.taskDescription}/></td>
+//                         <td><input value={tasks.taskPriority}/></td>
+//                         <td><button onClick={() => setEdit(false)}>Save Task</button></td>
+//               </tr>
+//           })
+      
+//     )
+//   ) : (
+//     // Display "No data to display" if tasks are empty
+//     <h4>No data to display</h4>
+//   )}
