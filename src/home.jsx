@@ -44,23 +44,26 @@ function Home(props){
     const getTasks = async () => {
         try {
           const response = await axios.get(`http://localhost:3001/users/username?username=${props.email}`); // Use template literal for clarity
+          tasks.pop()
           setTasks([...tasks,response.data])
         } catch (error) {
           console.error(error, "Could not get user");
         }
       };
       
-    const handlePriority=((priority)=>{
-        if(priority=="High"){
-           return <p style={{backgroundColor:"red"}}>High</p>
+      const handlePriority = (priority) => {
+        if(priority === "High"){
+            return "red"
         }
-        else if(priority==="Medium"){
-           return <p style={{backgroundColor:"yellow"}}>Medium</p>
+        else if(priority === "Medium"){
+            return "yellow"
         }
-        else if(priority=="Low"){
-            return <p style={{backgroundColor:"green"}}>Low</p>
+        else if(priority==="Low"){
+            return "green"
         }
-    })
+        
+      };
+      
 console.log(tasks)
     return (
         <div className='home-main-content'>
@@ -80,7 +83,7 @@ console.log(tasks)
           <div className='table-div'>
             <h1>Your Tasks</h1>
             <input type="text" placeholder="Search.."></input>
-            {tasks.length > 0 && email !== "" && tasks[0].taskTitle!==undefined ? (
+            {tasks.length > 0 && email !== "" && tasks.some(task => task.taskTitle) ? (
                 edit === false ? (
                     
                 <table>
@@ -96,7 +99,7 @@ console.log(tasks)
                         <tr key={task.id}>
                         <td>{task.taskTitle}</td>
                         <td>{task.taskDescription}</td>
-                        <td>{handlePriority(task.taskPriority)}</td>
+                        <td style={{ backgroundColor: handlePriority(task.taskPriority) }}>{task.taskPriority}</td>
                         <td><button onClick={() => setEdit(true)}>Edit Task</button></td>
                         <td><button onClick={()=>{setTaskTitle(null);setTaskDesc(null);setTaskPriority(null);updateTask();tasks.pop()}}>Delete Task</button></td>
                         </tr>
@@ -118,7 +121,7 @@ console.log(tasks)
                         <tr>
                         <td><input onChange={(event)=>setTaskTitle(event.target.value)}></input></td>
                         <td><input onChange={(event)=>setTaskDesc(event.target.value)}></input></td>
-                        <td><input onChange={(event)=>handlePriority(event.target.value)}></input></td>
+                        <td><input onChange={(event)=>setTaskPriority(event.target.value)}></input></td>
                         <td><button onClick={() => {setEdit(false);updateTask();tasks.pop();getTasks()}}>Save Task</button></td>
                         </tr> 
                     </tbody>
