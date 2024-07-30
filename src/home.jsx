@@ -34,6 +34,8 @@ function Home(props){
                 "username":email
             });
             // alert('Task added successfully');
+            tasks.pop()
+            setTasks(...tasks,[{"taskTitle":TaskTitle,"TaskPriority":TaskPriority,"taskDescription":TaskDesc}])
         }
         catch(error){
             console.error("Error making input request:",error);
@@ -60,7 +62,7 @@ function Home(props){
             return <p style={{backgroundColor:"green"}}>Low</p>
         }
     })
-
+console.log(tasks)
     return (
         <div className='home-main-content'>
           <button type='submit' onClick={() => { updateTask(); getTasks()}}>Save Task</button>
@@ -78,7 +80,7 @@ function Home(props){
           <textarea placeholder='Enter Task Description' onChange={(event) => setTaskDesc(event.target.value)} />
           <div className='table-div'>
             <h1>Your Tasks</h1>
-            {tasks.length > 0 && email !== "" ? (
+            {tasks.length > 0 && email !== "" & tasks[0].taskTitle!==undefined ? (
                 edit === false ? (
                 <table>
                     <thead>
@@ -95,7 +97,7 @@ function Home(props){
                         <td>{task.taskDescription}</td>
                         <td>{handlePriority(task.taskPriority)}</td>
                         <td><button onClick={() => setEdit(true)}>Edit Task</button></td>
-                        <td><button>Delete Task</button></td>
+                        <td><button onClick={()=>{setTaskTitle(null);setTaskDesc(null);setTaskPriority(null);updateTask();tasks.pop()}}>Delete Task</button></td>
                         </tr>
                     ))}
                     </tbody>

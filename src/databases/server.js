@@ -110,24 +110,24 @@ app.get('/users',(req,res)=>{
     }
   });
 
-  // Deelete user by id
-  // app.delete("/users/del",(req,res)=>{
-  //   const {id}=req.body
-  //   try{
-  //     const delete_stmt=db.prepare("DELETE FROM usersData WHERE id=?");
-  //     const info=delete_stmt.run(id);
-  //     if(info.changes>0){
-  //       res.json({message:"User deleted successfully!"});
-  //     }
-  //     else{
-  //       res.status(404).json({error:"User not found"})
-  //     }
-  //   }
-  //   catch(error){
-  //     console.error(error);
-  //     res.status(500).json({error:"Failed to delete user"})
-  //   }
-  // })
+  // Deelete user by their username
+  app.delete("/users/del",(req,res)=>{
+    const {username}=req.query
+    try{
+      const delete_stmt=db.prepare("DELETE FROM dataUsers WHERE username=?");
+      const info=delete_stmt.run(username);
+      if(info.changes>0){
+        res.json({message:"User deleted successfully!"});
+      }
+      else{
+        res.status(404).json({error:"User not found"})
+      }
+    }
+    catch(error){
+      console.error(error);
+      res.status(500).json({error:"Failed to delete user"})
+    }
+  })
   
 app.listen(3001, () => {
   console.log('Server is running on port 3001');
