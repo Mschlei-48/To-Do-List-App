@@ -9,7 +9,7 @@ function Home(props){
     useEffect(()=>{
         getTasks();
         
-    },[]);
+    });
 
     const [TaskTitle,setTaskTitle]=useState(undefined)
     const [TaskDesc,setTaskDesc]=useState(undefined)
@@ -21,7 +21,7 @@ function Home(props){
     console.log("Email:",email);
     
     const [tasks,setTasks]=useState([])
-    console.log("Tasks:",tasks)
+    
     //update the tasks
     const updateTask=async ()=>{
         try{
@@ -30,10 +30,9 @@ function Home(props){
                 "TaskPriority":TaskPriority,
                 "taskDescription":TaskDesc,
                 "username":email
+               
             });
             alert('Task added successfully');
-            // setTasks({"taskTitle":response.data.taskTitle,"taskDescription":response.data.taskDescription,"taskPriority":response.data.taskPriority})
-            // setTasks(response.data)
         }
         catch(error){
             console.error("Error making input request:",error);
@@ -44,7 +43,10 @@ function Home(props){
         try {
           const response = await axios.get(`http://localhost:3001/users/username?username=${props.email}`); // Use template literal for clarity
         // setTasks({"taskTitle":response.data.taskTitle,"taskDescription":response.data.taskDescription,"taskPriority":response.data.taskPriority})
+        console.log("Fetched:",response.data)
         setTasks(response.data)
+        console.log("Tasks:",tasks)
+        // alert("Task are fetched successfully")
         } catch (error) {
           console.error(error, "Could not get user");
         }
@@ -65,12 +67,12 @@ function Home(props){
 
 
       const handleContent=(()=>{
-        if(tasks.taskTitle===null || tasks.taskTitle===undefined){
+        if(tasks.length===1 || tasks.length===0){
             return(
                 <h1>No data to display</h1>
             )
         }
-        else if(tasks.taskTitle!==null || tasks.taskTitle!==undefined){
+        else if(tasks.length>1){
             return(
 
                 edit === false ? (
@@ -83,16 +85,19 @@ function Home(props){
                         <th>Task Priority</th>
                     </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                        <td>{tasks.taskTitle}</td>
-                        <td>{tasks.taskDescription}</td>
-                        <td style={{ backgroundColor: handlePriority(tasks.taskPriority) }}>{tasks.taskPriority}</td>
-                        <td><button onClick={() => setEdit(true)}>Edit Task</button></td>
-                        <td><button onClick={()=>{setTasks({"taskTitle":undefined,"taskDescription":undefined,"taskPriority":undefined});updateTask()}}>Delete Task</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                    {tasks.slice(1).map((task)=>(
+                            <tbody>
+                            <tr>
+                                <td>{task.taskTitle}</td>
+                                <td>{task.taskDescription}</td>
+                                <td style={{ backgroundColor: handlePriority(tasks.taskPriority) }}>{tasks.taskPriority}</td>
+                                <td><button onClick={() => setEdit(true)}>Edit Task</button></td>
+                                <td><button onClick={()=>{setTasks({"taskTitle":undefined,"taskDescription":undefined,"taskPriority":undefined});updateTask()}}>Delete Task</button></td>
+                            </tr>
+                        </tbody>
+                    ))}
+                     </table>
+
                 </> 
                 ) : (
                 
@@ -110,7 +115,7 @@ function Home(props){
                         <td><input onChange={(event)=>setTaskTitle(event.target.value)}></input></td>
                         <td><input onChange={(event)=>setTaskDesc(event.target.value)}></input></td>
                         <td><input onChange={(event)=>setTaskPriority(event.target.value)}></input></td>
-                        <td><button onClick={() => {setEdit(false);updateTask();getTasks()}}>Save Task</button></td>
+                        <td><button onClick={() => {setEdit(false);updateTask()}}>Save Task</button></td>
                         </tr> 
                     </tbody>
                 </table>
@@ -123,7 +128,7 @@ function Home(props){
       const showTasks=(()=>{
         
       })
-
+console.log(tasks)
     return (
         <div className="home-main-content">
 

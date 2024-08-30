@@ -8,9 +8,9 @@ app.use(express.json()); // Add middleware for JSON parsing
 
 const createTable = () => {
   const sql = `
-    CREATE TABLE IF NOT EXISTS USERS (
-      username TEXT NOT NULL,
-      password TEXT NOT NULL,
+    CREATE TABLE IF NOT EXISTS USER5 (
+      username TEXT,
+      password TEXT,
       taskTitle TEXT UNIQUE,
       taskPriority TEXT,
       taskDescription TEXT
@@ -26,7 +26,7 @@ createTable();
 app.post('/register', (req, res) => {
   const { username, password } = req.body;
   const sql = `
-    INSERT INTO USERS (username, password)
+    INSERT INTO USER5 (username, password)
     VALUES (?, ?)
   `;
 
@@ -42,7 +42,7 @@ app.post('/register', (req, res) => {
 // GET Request to get all users
 app.get('/users',(req,res)=>{
   try{
-    const rows=db.prepare("SELECT * FROM USERS").all();
+    const rows=db.prepare("SELECT * FROM USER5").all();
     res.json(rows);
   }
     catch(error) {
@@ -56,7 +56,7 @@ app.get('/users',(req,res)=>{
   app.get('/users/username',(req,res)=>{
     const {username}=req.query; //Note taht when you say req.body, it means the id will be taken from the body of the request, but when you say body.params it means the id will be taken from the params of the request
     try{
-      const row=db.prepare("SELECT * FROM USERS WHERE username=?").get(username);
+      const row=db.prepare("SELECT * FROM USER5 WHERE username=?").all(username);
       if(row) {
         res.json(row);
       }
@@ -70,43 +70,20 @@ app.get('/users',(req,res)=>{
     }
   });
 
-  // Update a user by their username
-  // app.put("/users/update-credentials",(req,res)=>{
-  //   // const {id}=req.params;
-  //   const {username, password}=req.body
-  //   try{
-  //     const update_stmt=db.prepare("UPDATE  usersData SET username=?,password=? WHERE id=?");
-  //     const info=update_stmt.run(username,password,id);
-  //     if(info.changes>0){
-  //       res.json({message:"Update successfully!"})
-  //     }
-  //     else{
-  //       res.status(404).json({error:"User not found"});
-  //     }
-  //   }
-  //   catch(error){
-  //     console.error(error);
-  //     res.status(500).json({error:"Failed to update user"});
-  //   }
-  // });
 
-  // Update the tasks by username
-  app.put("/users/update-tasks",(req,res)=>{
-    // const {id}=req.params;
+  // Post the tasks
+  app.post("/users/post-tasks",(req,res)=>{
     const {taskTitle, TaskPriority,taskDescription,username}=req.body
+    const sql = `
+    INSERT INTO USER5 (taskTitle,TaskPriority,taskDescription,username)
+    VALUES (?,?,?,?)
+  `;
     try{
-      const update_stmt=db.prepare("UPDATE  USERS SET taskTitle=?, TaskPriority=?,taskDescription=? WHERE username=?");
-      const info=update_stmt.run(taskTitle, TaskPriority,taskDescription,username);
-      if(info.changes>0){
-        res.json({message:"Updated Tasks successfully!"})
-      }
-      else{
-        res.status(404).json({error:"User not found"});
-      }
+      const info=db.prepare(sql).run(taskTitle, TaskPriority,taskDescription,username);
+      res.status(201).json({ id: info.lastInsertRowid,message:"Task Added sucessfully" });
     }
-    catch(error){
-      console.error(error);
-      res.status(500).json({error:"Failed to update user"});
+    catch (error) {
+      res.status(500).json({ error: 'Task already exists or other database error' });
     }
   });
 
@@ -114,7 +91,7 @@ app.get('/users',(req,res)=>{
   app.delete("/users/del",(req,res)=>{
     const {username}=req.query
     try{
-      const delete_stmt=db.prepare("DELETE FROM USERS WHERE username=?");
+      const delete_stmt=db.prepare("DELETE FROM USER5 WHERE username=?");
       const info=delete_stmt.run(username);
       if(info.changes>0){
         res.json({message:"User deleted successfully!"});
