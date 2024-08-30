@@ -13,15 +13,15 @@
 }
 #submit-button{
     background-color:rgb(237, 22, 58);
-    color:black;
+    color:white;
     margin-left:85px;
     width:426px;
     height:44px;
 }
 
 #register-button,#login-button{
-    color:black;
-    background-color:blue;
+    color:white;
+    background-color:orange;
     margin-left:85px;
     width:426px;
     height:44px;

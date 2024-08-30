@@ -8,14 +8,18 @@ import {useEffect} from 'react'
 function Home(props){
     useEffect(()=>{
         getTasks();
+
     });
+
+    
 
     const [TaskTitle,setTaskTitle]=useState(undefined)
     const [TaskDesc,setTaskDesc]=useState(undefined)
     const [TaskPriority,setTaskPriority]=useState(undefined)
     const [edit,setEdit]=useState(false);
-    const [toggle,setToggle]=useState("")
+    const [toggle,setToggle]=useState("table")
     const email=props.email;
+    const [search,setSearch]=useState("")
     const navigate=useNavigate()
     console.log("Email:",email);
     
@@ -58,8 +62,12 @@ function Home(props){
         try {
           const response = await axios.get(`http://localhost:3001/users/username?username=${props.email}`); // Use template literal for clarity
         // setTasks({"taskTitle":response.data.taskTitle,"taskDescription":response.data.taskDescription,"taskPriority":response.data.taskPriority})
-        console.log("Fetched:",response.data)
+       
         setTasks(response.data)
+        console.log("Fetched:",tasks)
+        if(search!==""){
+            tasks=tasks.filter((task)=>task.taskTitle.includes(search))
+        }
         console.log("Tasks:",tasks)
         // alert("Task are fetched successfully")
         } catch (error) {
@@ -105,22 +113,24 @@ function Home(props){
 
                 edit === false ? (
                     <>
-                <table className="table1">
-                    <thead>
+                <table className="table1" style={{width:"650px"}}>
+                    <thead  style={{backgroundColor:"orange"}}>
                     <tr>
                         <th>Task Title</th>
                         <th>Task Description</th>
                         <th>Task Priority</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
                     {tasks.slice(1).map((task)=>(
-                            <tbody>
+                            <tbody className="table-body">
                             <tr>
                                 <td>{task.taskTitle}</td>
                                 <td>{task.taskDescription}</td>
                                 <td style={{ backgroundColor: handlePriority(tasks.taskPriority) }}>{tasks.taskPriority}</td>
-                                <td><button onClick={() => setEdit(true)}>Edit Task</button></td>
-                                <td><button onClick={()=>{deleteTasks(task.taskTitle)}}>Delete Task</button></td>
+                                <td><button onClick={() => setEdit(true)} style={{width:"50%",backgroundColor:"transparent"}} className="action-buttons">Edit Task</button></td>
+                                <td><button onClick={()=>{deleteTasks(task.taskTitle)}} style={{width:"50%",backgroundColor:"transparent"}} className="action-buttons">Delete Task</button></td>
                             </tr>
                         </tbody>
                     ))}
@@ -129,7 +139,7 @@ function Home(props){
                 </> 
                 ) : (
                 
-                    <table>
+                    <table className="home-table">
                     <thead>
                     <tr>
                     <th>Task Title</th>
@@ -157,40 +167,51 @@ function Home(props){
       const showTasks=(()=>{
         
       })
-console.log(tasks)
+
+
     return (
         <div className="home-main-content">
 
             <button onClick={()=>navigate("/")} id="logout-button">Logout</button>
             <br></br>
-            <img src="./src/assets/logo.png" style={{width:"210px",height:"210px",marginLeft:"540px",borderRadius:"50%",marginTop:"15px"}}/>
-            <button onClick={()=>setToggle("form")}>Form</button>
-            <button onClick={()=>setToggle("table")}>Table</button>
-            <button onClick={()=>setToggle("both")}>Both</button>
-            {/* {toggle==="form"?():()} */}
-        <div className='home-form-content'>
-            
-            <h1 style={{marginLeft:"320px"}}>Enter Task</h1>   
-          <br/>
-          <br/>
-          <input style={{marginLeft:"95px",width:"310px",height:"50px",borderRadius:"20px",border:"1.5px solid orange"}} placeholder='Add Task Title' onChange={(event) => setTaskTitle(event.target.value)} />
-          <label for="priority" style={{marginLeft:"95px",fontWeight:"bold",fontSize:"20px"}}>Priority of Task: </label>
-          <select name="priority" className="priorities" onChange={(event)=>setTaskPriority(event.target.value)}>
-            <option>Low</option>
-            <option>Medium</option>
-            <option>High</option>
-          </select>
-          <br/>
-          <textarea style={{marginLeft:"95px",marginTop:"75px",width:"310px",height:"50px",borderRadius:"15px",border:"1.5px solid orange"}} placeholder='Enter Task Description' onChange={(event) => setTaskDesc(event.target.value)} />
             <br></br>
-          <button id="submit" onClick={()=>AddTask()}>Save Task</button>
-          </div>
-          <div className='table-div'>
-            <h1>Your Tasks</h1>
-            
-            {handleContent()}
-                
+            <br></br>
+            <br></br>
+            {/* <img src="./src/assets/logo.png" style={{width:"210px",height:"210px",marginLeft:"540px",borderRadius:"50%",marginTop:"15px"}}/> */}
+            <div className="toggle-div">
+                <button onClick={()=>setToggle("form")} className="toggle-buttons" style={{marginLeft:"350px"}}>Task Form</button>
+                <button onClick={()=>setToggle("table")} className="toggle-buttons" style={{marginLeft:"37px"}}>Task List</button>
             </div>
+        
+            {toggle==="form"?(
+                        <div className='home-form-content'>
+            
+                        <h1 style={{marginLeft:"320px"}}>Enter Task</h1>   
+                      <br/>
+                      <br/>
+                      <input style={{marginLeft:"95px",width:"310px",height:"50px",borderRadius:"20px",border:"1.5px solid orange"}} placeholder='Add Task Title' onChange={(event) => setTaskTitle(event.target.value)} />
+                      <label for="priority" style={{marginLeft:"95px",fontWeight:"bold",fontSize:"20px"}}>Priority of Task: </label>
+                      <select name="priority" className="priorities" onChange={(event)=>setTaskPriority(event.target.value)}>
+                        <option>Low</option>
+                        <option>Medium</option>
+                        <option>High</option>
+                      </select>
+                      <br/>
+                      <textarea style={{marginLeft:"95px",marginTop:"75px",width:"310px",height:"50px",borderRadius:"15px",border:"1.5px solid orange"}} placeholder='Enter Task Description' onChange={(event) => setTaskDesc(event.target.value)} />
+                        <br></br>
+                      <button id="submit" onClick={()=>AddTask()}>Save Task</button>
+                      </div>
+            ):(
+                <div className='table-div'>
+                <h2 style={{marginLeft:"250px"}}>Your Tasks</h2>
+                <input placeholder="Search..." className="search" onChange={(event)=>setSearch(event.target.value)}></input>
+                
+                {handleContent()}
+                    
+                </div>
+            )}
+
+
 
         </div>
 

@@ -3,8 +3,9 @@
     background-color:orange;
     color:white;
     position:absolute;
-    right:1090px;
+    left:600px;
 }
+
 .home-form-content{
     border:black solid 2px;
     margin-left:25%;
@@ -23,6 +24,37 @@
     background-color:rgba(212,39,156,255);
     color:white;
 }
+.search{
+    margin-bottom:8px;
+    width:281px;
+    height:35px;
+    border:1px solid orange;
+    
+}
+.table-div{
+    margin-left:350px;
+    width:400px;
+    margin-top:45px;
+}
+.table-body{
+    background-color:rgb(214, 210, 210);
+}
+.action-buttons:hover{
+    border:2px solid orange;
+}
+.toggle-buttons{
+    /* margin-left:300px; */
+    width:200px;
+    background-color:orange ;
+    color:white;
+}
+.toggle-div{
+    /* width:70%; */
+    margin-left:100px;
+    display:flex;
+
+}
+
 
 
 
