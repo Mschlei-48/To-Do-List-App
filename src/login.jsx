@@ -54,13 +54,15 @@ function Login(props){
     };
 
     return(
-        <div className='main-content'>
+        <div className='main-content' style={{border:"2px solid black",width:"600px",marginLeft:"370px",paddingBottom:"75px"}}>
+            <img src="./src/assets/logo.png" style={{width:"150px",height:"150px",marginLeft:"197px",borderRadius:"50%",marginTop:"15px"}}/>
+        <h1 style={{marginLeft:"200px"}}>Login</h1>
                 <FontAwesomeIcon icon={emailIcon} id='email-icon'/>
-                <input placeholder="    Email address" className="login-input" type='email' onChange={(event)=>{setUserName(event.target.value);setEmailIcon()}}></input>
+                <input placeholder="        Email address" className="input" type='email' onChange={(event)=>{setUserName(event.target.value);setEmailIcon()}}></input>
                 <br></br>
                 <br></br>
                 <FontAwesomeIcon icon={passIcon} id='password-icon'/>
-                <input placeholder="    Password" className="login-input" type='password' onChange={(event)=>{setPassWord(event.target.value);setPassIcon()}}></input>
+                <input placeholder="        Password" className="input" type='password' onChange={(event)=>{setPassWord(event.target.value);setPassIcon()}}></input>
                 <br></br>
                 <br></br>
                 <button id='submit-button' onClick={()=>{getUsers();handleEmail()}}>Login</button>

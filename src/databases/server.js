@@ -8,8 +8,8 @@ app.use(express.json()); // Add middleware for JSON parsing
 
 const createTable = () => {
   const sql = `
-    CREATE TABLE IF NOT EXISTS dataUsers (
-      username TEXT PRIMARY KEY NOT NULL,
+    CREATE TABLE IF NOT EXISTS USERS (
+      username TEXT NOT NULL,
       password TEXT NOT NULL,
       taskTitle TEXT UNIQUE,
       taskPriority TEXT,
@@ -26,7 +26,7 @@ createTable();
 app.post('/register', (req, res) => {
   const { username, password } = req.body;
   const sql = `
-    INSERT INTO dataUsers (username, password)
+    INSERT INTO USERS (username, password)
     VALUES (?, ?)
   `;
 
@@ -42,7 +42,7 @@ app.post('/register', (req, res) => {
 // GET Request to get all users
 app.get('/users',(req,res)=>{
   try{
-    const rows=db.prepare("SELECT * FROM dataUsers").all();
+    const rows=db.prepare("SELECT * FROM USERS").all();
     res.json(rows);
   }
     catch(error) {
@@ -56,7 +56,7 @@ app.get('/users',(req,res)=>{
   app.get('/users/username',(req,res)=>{
     const {username}=req.query; //Note taht when you say req.body, it means the id will be taken from the body of the request, but when you say body.params it means the id will be taken from the params of the request
     try{
-      const row=db.prepare("SELECT * FROM dataUsers WHERE username=?").get(username);
+      const row=db.prepare("SELECT * FROM USERS WHERE username=?").get(username);
       if(row) {
         res.json(row);
       }
@@ -95,7 +95,7 @@ app.get('/users',(req,res)=>{
     // const {id}=req.params;
     const {taskTitle, TaskPriority,taskDescription,username}=req.body
     try{
-      const update_stmt=db.prepare("UPDATE  dataUsers SET taskTitle=?, TaskPriority=?,taskDescription=? WHERE username=?");
+      const update_stmt=db.prepare("UPDATE  USERS SET taskTitle=?, TaskPriority=?,taskDescription=? WHERE username=?");
       const info=update_stmt.run(taskTitle, TaskPriority,taskDescription,username);
       if(info.changes>0){
         res.json({message:"Updated Tasks successfully!"})
@@ -114,7 +114,7 @@ app.get('/users',(req,res)=>{
   app.delete("/users/del",(req,res)=>{
     const {username}=req.query
     try{
-      const delete_stmt=db.prepare("DELETE FROM dataUsers WHERE username=?");
+      const delete_stmt=db.prepare("DELETE FROM USERS WHERE username=?");
       const info=delete_stmt.run(username);
       if(info.changes>0){
         res.json({message:"User deleted successfully!"});

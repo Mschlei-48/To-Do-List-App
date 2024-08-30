@@ -1,5 +1,83 @@
-.home-main-content{
-    margin-left:50%;
-    width:200%;
+#logout-button{
+    margin-top:20px;
+    background-color:orange;
+    color:white;
+    position:absolute;
+    right:1090px;
+}
+.home-form-content{
+    border:black solid 2px;
+    margin-left:25%;
+    height:500px;
+    width:900px;
+    margin-top:70px;
+}
+.priorities{
+    width:105px;
+    font-weight:20px;
+    height:25px;
+}
+#submit{
+    margin-top:35px;
+    width:250px;
+    background-color:rgba(212,39,156,255);
     color:white;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ /* .home-main-content{
+    margin-top:150px;
+ } */
+/* #title{
+    width:50%;
+    padding:2%;
+    color:black;
+    margin-left:450px;
+
+} */
+/* #priority1,#priority2,#priority3{
+    width:529px;
+    margin-left:450px;
+    color:white;
+    background-color:rgb(237, 22, 58);
+
+}
+
+.description{
+    width:45%;
+    padding:2%;
+    margin-left:450px;
+
+}
+::placeholder{
+    color:rgb(134, 129, 129);
+    text-align:center;
+}
+.table1{
+    margin-left:450px;
+    
+}
+h1,h3{
+    margin-left:450px;
+}
+#submit{
+    width:54%;
+    margin-left:1%;
+    color:white;
+    background-color:rgb(237, 22, 58);
+    margin-left:450px;
+} */

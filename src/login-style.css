@@ -1,55 +1,45 @@
-body{
-    width:100%;
-    background-image: url("./src/assets/back.jpg");
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size:cover;
-}
-
-
-.login-input{
-    width:120%;
-    padding:7%;
-    margin-left:190%;
+.input{
+    width:420px;
+    height:44px;
+    margin-left:85px;
     border-radius:7px;
-    border:2px white solid;
+    border:2px black solid;
     opacity:0.7;
-    color:white;
-    background-color: transparent;
-      
+    color:black;
+    background-color: transparent;     
 }
 ::placeholder{
-    color:white;
+    color:grey;
 }
 #submit-button{
     background-color:rgb(237, 22, 58);
-    color:white;
-    margin-left:190%;
-    width:136%;
-    padding:6%;
+    color:black;
+    margin-left:85px;
+    width:426px;
+    height:44px;
 }
 
-#register-button{
-    color:white;
+#register-button,#login-button{
+    color:black;
     background-color:blue;
-    margin-left:190%;
-    width:136%;
-    padding:6%;
+    margin-left:85px;
+    width:426px;
+    height:44px;
 }
 
 button{
     margin-left:37%;
 }
 #email-icon{
-    margin-left:36%;
+    margin-left:7%;
     margin-top:1.5%;
     position:absolute;
-    color:white;
+    color:black;
 }
 
 #password-icon{
     position:absolute;
-    margin-left:36%;
+    margin-left:7%;
     margin-top:1.4%;
-    color:white;
+    color:black;
 }
