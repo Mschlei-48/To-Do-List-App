@@ -8,7 +8,6 @@ import {useEffect} from 'react'
 function Home(props){
     useEffect(()=>{
         getTasks();
-        
     });
 
     const [TaskTitle,setTaskTitle]=useState(undefined)
@@ -22,8 +21,23 @@ function Home(props){
     
     const [tasks,setTasks]=useState([])
     
-    //update the tasks
-    const updateTask=async ()=>{
+    // Update tasks
+    const updateTasks=async ()=>{
+        try{
+            const response=await axios.put("http://localhost:3001/users/update-tasks",{
+                "taskTitle":TaskTitle, 
+                "TaskPriority":TaskPriority,
+                "taskDescription":TaskDesc,
+                "username":email
+            })
+            alert("Updated TaskSuccessfully")
+        }
+        catch(error){
+            console.error("Error is:",error)
+        }
+    };
+    //Add the tasks
+    const AddTask=async ()=>{
         try{
             const response=await axios.post('http://localhost:3001/users/post-tasks',{
                 "taskTitle":TaskTitle, 
@@ -39,6 +53,7 @@ function Home(props){
         }
     };
 
+    // Get Tasks
     const getTasks = async () => {
         try {
           const response = await axios.get(`http://localhost:3001/users/username?username=${props.email}`); // Use template literal for clarity
@@ -51,7 +66,19 @@ function Home(props){
           console.error(error, "Could not get user");
         }
       };
+
+    //   Delete Tasks
+    const deleteTasks=async(task)=>{
+        try{
+            const response=await axios.delete(`http://localhost:3001/users/del?username=${email}&taskTitle=${task}`)
+            alert("Deleted task successfully")
+        }
+        catch(error){
+            console.error("Error is:",error)
+        }
+    }
       
+    //   Handle Priority
       const handlePriority = (priority) => {
         if(priority === "High"){
             return "red"
@@ -66,6 +93,7 @@ function Home(props){
       };
 
 
+    //   Handle Content
       const handleContent=(()=>{
         if(tasks.length===1 || tasks.length===0){
             return(
@@ -92,7 +120,7 @@ function Home(props){
                                 <td>{task.taskDescription}</td>
                                 <td style={{ backgroundColor: handlePriority(tasks.taskPriority) }}>{tasks.taskPriority}</td>
                                 <td><button onClick={() => setEdit(true)}>Edit Task</button></td>
-                                <td><button onClick={()=>{setTasks({"taskTitle":undefined,"taskDescription":undefined,"taskPriority":undefined});updateTask()}}>Delete Task</button></td>
+                                <td><button onClick={()=>{deleteTasks(task.taskTitle)}}>Delete Task</button></td>
                             </tr>
                         </tbody>
                     ))}
@@ -115,7 +143,8 @@ function Home(props){
                         <td><input onChange={(event)=>setTaskTitle(event.target.value)}></input></td>
                         <td><input onChange={(event)=>setTaskDesc(event.target.value)}></input></td>
                         <td><input onChange={(event)=>setTaskPriority(event.target.value)}></input></td>
-                        <td><button onClick={() => {setEdit(false);updateTask()}}>Save Task</button></td>
+                        <td><button onClick={() => {setEdit(false);updateTasks()}}>Save Task</button></td>
+                        <td><button onClick={()=>setEdit(false)}>Cancel</button></td>
                         </tr> 
                     </tbody>
                 </table>
@@ -154,7 +183,7 @@ console.log(tasks)
           <br/>
           <textarea style={{marginLeft:"95px",marginTop:"75px",width:"310px",height:"50px",borderRadius:"15px",border:"1.5px solid orange"}} placeholder='Enter Task Description' onChange={(event) => setTaskDesc(event.target.value)} />
             <br></br>
-          <button id="submit" onClick={()=>updateTask()}>Save Task</button>
+          <button id="submit" onClick={()=>AddTask()}>Save Task</button>
           </div>
           <div className='table-div'>
             <h1>Your Tasks</h1>

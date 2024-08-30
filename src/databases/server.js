@@ -39,6 +39,47 @@ app.post('/register', (req, res) => {
 });
 
 
+// Update the task by username
+// app.put("/users/update-tasks",(req,res)=>{
+//   const {taskTitle, TaskPriority,taskDescription,username}=req.body
+//   const sql=`
+//   UPDATE  USER5 SET TaskPriority=?,taskDescription=? WHERE username=? AND taskTitle=?
+//   `;
+//   try{
+//     // const update_stmt=db.prepare("UPDATE  USER5 SET TaskPriority=?,taskDescription=? WHERE username=? AND taskTitle=?");
+//     const info = db.prepare(sql).run(taskTitle, TaskPriority, taskDescription, username);
+
+//     if(info.changes>0){
+//       res.json({message:"Updated Tasks successfully!"})
+//     }
+//     else{
+//       res.status(404).json({error:"User not found"});
+//     }
+//   }
+//   catch(error){
+//     console.error(error);
+//     res.status(500).json({error:"Failed to update user"});
+//   }
+// });
+app.put("/users/update-tasks", (req, res) => {
+  const { taskTitle, TaskPriority, taskDescription, username } = req.body;
+  const sql = `
+    UPDATE USER5 SET TaskPriority = ?, taskDescription = ? WHERE username = ? AND taskTitle = ?
+  `;
+  try {
+    const info = db.prepare(sql).run(TaskPriority, taskDescription, username, taskTitle);
+
+    if (info.changes > 0) {
+      res.json({ message: "Updated Tasks successfully!" });
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to update user" });
+  }
+});
+
 // GET Request to get all users
 app.get('/users',(req,res)=>{
   try{
@@ -69,6 +110,24 @@ app.get('/users',(req,res)=>{
       res.status(500).json({error:"Failed to retrieve user"});
     }
   });
+
+  // Delete a task
+  app.delete("/users/del", (req, res) => {
+    const { username, taskTitle } = req.query;
+    try {
+      const delete_stmt = db.prepare("DELETE FROM USER5 WHERE username = ? AND taskTitle = ?");
+      const info = delete_stmt.run(username, taskTitle);
+      if (info.changes > 0) {
+        res.json({ message: "Task deleted successfully!" });
+      } else {
+        res.status(404).json({ error: "Task not found" });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Failed to delete task" });
+    }
+  });
+  
 
 
   // Post the tasks
