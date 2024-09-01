@@ -8,6 +8,16 @@ import {useEffect} from 'react'
 function Home(props){
     useEffect(()=>{
         getTasks();
+        if(search!==""){
+            setData(tasks.slice(1).filter((task)=>task.taskTitle.toLowerCase().includes(search.toLowerCase())))
+            console.log("Filterd:",data)
+        }
+        if(search==="")
+        {
+            setData(tasks.slice(1))
+            console.log("Not Filterd:",data)
+        }
+        // console.log("Filterd:",tasks.slice(1).filter((task)=>task.taskTitle.toLowerCase().includes(search.toLowerCase())))
 
     });
 
@@ -18,13 +28,18 @@ function Home(props){
     const [TaskPriority,setTaskPriority]=useState(undefined)
     const [edit,setEdit]=useState(false);
     const [toggle,setToggle]=useState("table")
+    const [data,setData]=useState([])
     const email=props.email;
     const [search,setSearch]=useState("")
     const navigate=useNavigate()
-    console.log("Email:",email);
+    // console.log("Email:",email);
     
     const [tasks,setTasks]=useState([])
     
+
+
+
+    // console.log("Data:",data)
     // Update tasks
     const updateTasks=async ()=>{
         try{
@@ -64,11 +79,7 @@ function Home(props){
         // setTasks({"taskTitle":response.data.taskTitle,"taskDescription":response.data.taskDescription,"taskPriority":response.data.taskPriority})
        
         setTasks(response.data)
-        console.log("Fetched:",tasks)
-        if(search!==""){
-            tasks=tasks.filter((task)=>task.taskTitle.includes(search))
-        }
-        console.log("Tasks:",tasks)
+        // console.log("Fetched:",tasks)
         // alert("Task are fetched successfully")
         } catch (error) {
           console.error(error, "Could not get user");
@@ -103,12 +114,13 @@ function Home(props){
 
     //   Handle Content
       const handleContent=(()=>{
-        if(tasks.length===1 || tasks.length===0){
+
+        if(data.length<1){
             return(
                 <h1>No data to display</h1>
             )
         }
-        else if(tasks.length>1){
+        else if(data.length>0){
             return(
 
                 edit === false ? (
@@ -123,12 +135,12 @@ function Home(props){
                         <th>Delete</th>
                     </tr>
                     </thead>
-                    {tasks.slice(1).map((task)=>(
+                    {data.map((task)=>(
                             <tbody className="table-body">
                             <tr>
                                 <td>{task.taskTitle}</td>
                                 <td>{task.taskDescription}</td>
-                                <td style={{ backgroundColor: handlePriority(tasks.taskPriority) }}>{tasks.taskPriority}</td>
+                                <td style={{ backgroundColor: handlePriority(task.taskPriority) }}>{task.taskPriority}</td>
                                 <td><button onClick={() => setEdit(true)} style={{width:"50%",backgroundColor:"transparent"}} className="action-buttons">Edit Task</button></td>
                                 <td><button onClick={()=>{deleteTasks(task.taskTitle)}} style={{width:"50%",backgroundColor:"transparent"}} className="action-buttons">Delete Task</button></td>
                             </tr>
@@ -152,7 +164,11 @@ function Home(props){
                         <tr>
                         <td><input onChange={(event)=>setTaskTitle(event.target.value)}></input></td>
                         <td><input onChange={(event)=>setTaskDesc(event.target.value)}></input></td>
-                        <td><input onChange={(event)=>setTaskPriority(event.target.value)}></input></td>
+                        <select name="priority" className="priorities" onChange={(event)=>setTaskPriority(event.target.value)} style={{marginTop:"20px"}}>
+                            <option>Low</option>
+                            <option>Medium</option>
+                            <option>High</option>
+                        </select>
                         <td><button onClick={() => {setEdit(false);updateTasks()}}>Save Task</button></td>
                         <td><button onClick={()=>setEdit(false)}>Cancel</button></td>
                         </tr> 
